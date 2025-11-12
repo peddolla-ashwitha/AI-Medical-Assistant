@@ -9,17 +9,26 @@ document.getElementById("analyzeBtn").addEventListener("click", async () => {
 
   output.innerHTML = "<p>🧠 Analyzing your symptoms...</p>";
 
-  try {
-    const response = await fetch("/analyze", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ symptoms })
-    });
-
-    const data = await response.json();
-    output.innerHTML = <div>${data.analysis}</div>;
-  } catch (err) {
-    console.error(err);
-    output.innerHTML = "<p>⚠ Something went wrong. Please try again later.</p>";
-  }
+  // Offline simulation for GitHub demo (no API key required)
+  // Real AI logic can be added later using OpenAI API
+  setTimeout(() => {
+    output.innerHTML = `
+      <h3>Possible Causes:</h3>
+      <ul>
+        <li>Common Cold or Mild Flu</li>
+        <li>Dehydration</li>
+      </ul>
+      <h3>Precautions:</h3>
+      <ul>
+        <li>Drink warm fluids and rest well</li>
+        <li>Take paracetamol for fever (if any)</li>
+      </ul>
+      <h3>Home Remedies:</h3>
+      <ul>
+        <li>Ginger tea and honey</li>
+        <li>Steam inhalation 2 times a day</li>
+      </ul>
+      <p>⚠️ Consult a doctor if symptoms persist more than 2 days.</p>
+    `;
+  }, 1500);
 });
