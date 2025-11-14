@@ -1,134 +1,201 @@
-console.log("✅ AI Medical Assistant Loaded!");
+console.log("✅ AI Symptom Analyzer Loaded!");
 
-// Reference elements
-const btn = document.getElementById("analyzeBtn");
-const output = document.getElementById("output");
-const input = document.getElementById("symptoms");
-
-// Offline symptom database
+// Database of 30+ symptoms with causes, precautions, and remedies
 const symptomDatabase = {
   fever: {
-    causes: ["Viral infection", "Flu", "Heat exhaustion"],
-    precautions: ["Rest well", "Stay hydrated", "Monitor temperature"],
-    remedies: ["Paracetamol", "Cold compress", "Drink warm fluids"]
+    causes: ["Viral infection", "Bacterial infection", "Flu", "Dengue"],
+    precautions: ["Stay hydrated", "Get enough rest", "Monitor temperature"],
+    remedies: ["Cold compress", "Take paracetamol", "Drink ORS fluids"]
   },
   headache: {
-    causes: ["Migraine", "Dehydration", "Stress or screen strain"],
-    precautions: ["Avoid bright light", "Take breaks", "Drink water"],
-    remedies: ["Peppermint tea", "Massage temples", "Cold compress"]
+    causes: ["Stress", "Dehydration", "Migraine", "Screen strain"],
+    precautions: ["Avoid bright screens", "Drink water", "Sleep well"],
+    remedies: ["Peppermint tea", "Cold compress", "Massage temples"]
   },
   cough: {
-    causes: ["Cold", "Allergy", "Throat infection"],
-    precautions: ["Avoid cold drinks", "Use humidifier", "Rest throat"],
-    remedies: ["Honey warm water", "Ginger tea", "Steam inhalation"]
+    causes: ["Common cold", "Flu", "Allergy", "Infection"],
+    precautions: ["Avoid cold drinks", "Stay warm"],
+    remedies: ["Honey water", "Steam inhalation", "Ginger tea"]
   },
   cold: {
-    causes: ["Virus", "Weather change"],
-    precautions: ["Stay warm", "Avoid chilled items"],
-    remedies: ["Ginger tea", "Steam inhalation", "Warm soup"]
+    causes: ["Viral infection", "Seasonal change"],
+    precautions: ["Wear warm clothes", "Drink warm fluids"],
+    remedies: ["Ginger tea", "Steam", "Warm soup"]
+  },
+  sorethroat: {
+    causes: ["Viral infection", "Allergy", "Cold"],
+    precautions: ["Avoid cold drinks", "Talk less"],
+    remedies: ["Salt water gargle", "Honey lemon water"]
+  },
+  runningnose: {
+    causes: ["Allergy", "Cold", "Flu"],
+    precautions: ["Keep warm", "Avoid dust"],
+    remedies: ["Steam", "Saline drops"]
+  },
+  sneezing: {
+    causes: ["Allergies", "Dust", "Cold"],
+    precautions: ["Avoid strong smells", "Use mask"],
+    remedies: ["Steam inhalation"]
+  },
+  bodypain: {
+    causes: ["Viral fever", "Fatigue", "Dehydration"],
+    precautions: ["Avoid heavy work", "Sleep well"],
+    remedies: ["Warm bath", "Light stretching"]
+  },
+  fatigue: {
+    causes: ["Lack of sleep", "Anemia", "Stress"],
+    precautions: ["Take rest", "Maintain diet"],
+    remedies: ["Drink glucose water", "Deep breathing"]
+  },
+  nausea: {
+    causes: ["Indigestion", "Food poisoning", "Pregnancy"],
+    precautions: ["Avoid oily food", "Stay hydrated"],
+    remedies: ["Ginger tea", "ORS", "Mint water"]
+  },
+  vomiting: {
+    causes: ["Food poisoning", "Stomach infection"],
+    precautions: ["Avoid eating until better", "Drink water slowly"],
+    remedies: ["ORS", "Coconut water"]
   },
   stomachpain: {
     causes: ["Gas", "Indigestion", "Food poisoning"],
-    precautions: ["Avoid oily food", "Eat light", "Hydrate"],
-    remedies: ["Mint tea", "Hot water bag", "Buttermilk"]
+    precautions: ["Eat light food", "Avoid junk food"],
+    remedies: ["Hot water bag", "Jeera water"]
   },
-  sorethroat: {
-    causes: ["Infection", "Cold", "Allergy"],
-    precautions: ["Avoid cold drinks", "Rest voice"],
-    remedies: ["Salt-water gargle", "Honey lemon water", "Warm soup"]
+  diarrhea: {
+    causes: ["Infection", "Expired food", "Contaminated water"],
+    precautions: ["Avoid milk products", "Drink ORS"],
+    remedies: ["ORS", "Banana", "Curd rice"]
   },
-  vomiting: {
-    causes: ["Food poisoning", "Indigestion", "Motion sickness"],
-    precautions: ["Avoid heavy meals", "Sip water slowly"],
-    remedies: ["ORS solution", "Ginger tea", "Banana"]
-  },
-  diarrhoea: {
-    causes: ["Contaminated food", "Virus", "Food allergy"],
-    precautions: ["Avoid milk & spicy food", "Stay hydrated"],
-    remedies: ["ORS", "Curd rice", "Coconut water"]
-  },
-  backpain: {
-    causes: ["Muscle strain", "Poor posture", "Stress"],
-    precautions: ["Avoid heavy lifting", "Sit properly"],
-    remedies: ["Hot pack", "Light stretching", "Gentle massage"]
+  constipation: {
+    causes: ["Low fiber diet", "Less water"],
+    precautions: ["Eat fiber-rich foods", "Drink water"],
+    remedies: ["Warm water", "Fruits like papaya"]
   },
   chestpain: {
-    causes: ["Acidity", "Muscle strain", "Stress/anxiety"],
-    precautions: ["Avoid spicy food", "Do not overexert"],
-    remedies: ["Drink cold milk", "Relaxation breathing"]
+    causes: ["Gas", "Stress", "Muscle strain"],
+    precautions: ["Avoid heavy meals", "Rest"],
+    remedies: ["Warm water", "Sit upright"]
+  },
+  shortnessofbreath: {
+    causes: ["Asthma", "Allergy", "Stress"],
+    precautions: ["Avoid dust", "Stay calm"],
+    remedies: ["Breathing exercises"]
   },
   dizziness: {
-    causes: ["Low BP", "Dehydration", "Weakness"],
-    precautions: ["Stand up slowly", "Avoid skipping meals"],
-    remedies: ["ORS", "Eat something sweet", "Drink water"]
+    causes: ["Low BP", "Dehydration"],
+    precautions: ["Sit immediately", "Avoid standing fast"],
+    remedies: ["Sugar water", "ORS"]
   },
-  rashes: {
-    causes: ["Allergy", "Skin irritation", "Heat rash"],
-    precautions: ["Avoid scratching", "Use clean clothes"],
-    remedies: ["Aloe vera gel", "Cold compress", "Calamine lotion"]
+  highbp: {
+    causes: ["Stress", "Salt intake"],
+    precautions: ["Avoid salt", "Avoid stress"],
+    remedies: ["Deep breathing", "Warm water"]
+  },
+  backpain: {
+    causes: ["Wrong posture", "Weak muscles"],
+    precautions: ["Sit properly", "Avoid long sitting"],
+    remedies: ["Hot pack", "Light stretching"]
+  },
+  jointpain: {
+    causes: ["Arthritis", "Vitamin deficiency"],
+    precautions: ["Avoid cold weather", "Eat calcium foods"],
+    remedies: ["Warm oil massage"]
+  },
+  skinrash: {
+    causes: ["Allergy", "Heat"],
+    precautions: ["Avoid scratching", "Keep skin clean"],
+    remedies: ["Aloe vera gel", "Ice pack"]
+  },
+  itching: {
+    causes: ["Allergy", "Dry skin"],
+    precautions: ["Avoid hot showers"],
+    remedies: ["Moisturizer", "Aloe vera"]
+  },
+  lossappetite: {
+    causes: ["Stomach infection", "Stress"],
+    precautions: ["Eat small meals"],
+    remedies: ["ORS", "Soup"]
+  },
+  weightloss: {
+    causes: ["Thyroid", "Poor diet"],
+    precautions: ["Increase calorie intake"],
+    remedies: ["Milk, nuts, banana"]
+  },
+  swelling: {
+    causes: ["Injury", "Venous issues"],
+    precautions: ["Reduce salt", "Rest"],
+    remedies: ["Cold compress"]
+  },
+  drycough: {
+    causes: ["Allergy", "Throat dryness"],
+    precautions: ["Avoid cold food"],
+    remedies: ["Honey water"]
+  },
+  wetcough: {
+    causes: ["Cold", "Flu"],
+    precautions: ["Avoid cold drinks"],
+    remedies: ["Steam", "Ginger tea"]
+  },
+  wheezing: {
+    causes: ["Asthma", "Allergy"],
+    precautions: ["Avoid dust"],
+    remedies: ["Steam"]
   },
   earpain: {
-    causes: ["Infection", "Cold", "Earwax buildup"],
-    precautions: ["Avoid inserting objects", "Keep ear dry"],
-    remedies: ["Warm compress", "Steam inhalation"]
+    causes: ["Infection", "Wax buildup"],
+    precautions: ["Avoid loud noise"],
+    remedies: ["Warm compress"]
   },
-  eyeirritation: {
-    causes: ["Dust allergy", "Screen strain"],
-    precautions: ["Avoid rubbing eyes", "Take screen breaks"],
-    remedies: ["Cold water splash", "Rose water drops"]
+  eyeredness: {
+    causes: ["Infection", "Dust"],
+    precautions: ["Avoid touching eyes"],
+    remedies: ["Cold water wash"]
   },
-  legcramps: {
-    causes: ["Dehydration", "Low magnesium", "Over-exercise"],
-    precautions: ["Stay hydrated", "Stretch regularly"],
-    remedies: ["Warm compress", "Banana", "Gentle massage"]
+  acne: {
+    causes: ["Oil skin", "Hormonal imbalance"],
+    precautions: ["Avoid oily food"],
+    remedies: ["Aloe vera", "Neem pack"]
   }
 };
 
-// Main button logic
-btn.addEventListener("click", () => {
-  const userInput = input.value.trim().toLowerCase();
-  output.innerHTML = "";
+// Click event for analyzing symptoms
+document.getElementById("analyzeBtn").addEventListener("click", () => {
+  const input = document.getElementById("symptoms").value.trim().toLowerCase();
+  const output = document.getElementById("output");
 
-  if (!userInput) {
-    output.innerHTML = "<p>Please enter your symptoms.</p>";
+  if (!input) {
+    output.innerHTML = "<p>Please enter symptoms.</p>";
     return;
   }
 
-  output.innerHTML = "<p>🧠 Analyzing your symptoms...</p>";
+  let found = false;
+  let html = `<h2>🔍 Results:</h2>`;
 
-  setTimeout(() => {
-    let found = false;
-    let html = "";
+  for (const sym in symptomDatabase) {
+    if (input.includes(sym)) {
+      const info = symptomDatabase[sym];
+      found = true;
 
-    for (let symptom in symptomDatabase) {
-      if (userInput.includes(symptom)) {
-        const info = symptomDatabase[symptom];
+      html += `
+        <h3>🩺 Symptom: ${sym}</h3>
+        <p><b>Possible Causes:</b></p>
+        <ul>${info.causes.map(c => `<li>${c}</li>`).join("")}</ul>
 
-        html += `
-          <h3>🩺 Symptom: ${symptom}</h3>
+        <p><b>Precautions:</b></p>
+        <ul>${info.precautions.map(p => `<li>${p}</li>`).join("")}</ul>
 
-          <h4>Possible Causes:</h4>
-          <ul>${info.causes.map(c => `<li>${c}</li>`).join("")}</ul>
+        <p><b>Home Remedies:</b></p>
+        <ul>${info.remedies.map(r => `<li>${r}</li>`).join("")}</ul>
 
-          <h4>Precautions:</h4>
-          <ul>${info.precautions.map(p => `<li>${p}</li>`).join("")}</ul>
-
-          <h4>Home Remedies:</h4>
-          <ul>${info.remedies.map(r => `<li>${r}</li>`).join("")}</ul>
-
-          <hr>
-        `;
-        found = true;
-      }
-    }
-
-    if (!found) {
-      html = `
-        <p>⚠️ No data found for your symptoms.</p>
-        <p>Try symptoms like: fever, headache, stomachpain, cough, dizziness, vomiting etc.</p>
+        <hr>
       `;
     }
+  }
 
-    output.innerHTML = html;
-  }, 1000);
+  if (!found) {
+    html = "<p>No data found for your symptom.</p>";
+  }
+
+  output.innerHTML = html;
 });
