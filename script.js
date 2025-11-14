@@ -5,235 +5,86 @@ const btn = document.getElementById("analyzeBtn");
 const output = document.getElementById("output");
 const input = document.getElementById("symptoms");
 
-// Symptom database (16 symptoms total)
+// Offline symptom database
 const symptomDatabase = {
   fever: {
-    causes: ["Viral infection", "Flu", "Dengue (if persistent)"],
-    precautions: [
-      "Stay hydrated and rest well",
-      "Monitor temperature regularly",
-      "Consult a doctor if fever lasts more than 3 days"
-    ],
-    remedies: [
-      "Drink warm water",
-      "Take paracetamol for relief",
-      "Cold compress on forehead"
-    ]
+    causes: ["Viral infection", "Flu", "Heat exhaustion"],
+    precautions: ["Rest well", "Stay hydrated", "Monitor temperature"],
+    remedies: ["Paracetamol", "Cold compress", "Drink warm fluids"]
   },
-
   headache: {
-    causes: ["Migraine", "Dehydration", "Stress or eye strain"],
-    precautions: [
-      "Avoid bright lights and loud noise",
-      "Stay hydrated",
-      "Take proper rest"
-    ],
-    remedies: [
-      "Drink ginger or peppermint tea",
-      "Massage temples gently",
-      "Apply a cold or warm compress"
-    ]
+    causes: ["Migraine", "Dehydration", "Stress or screen strain"],
+    precautions: ["Avoid bright light", "Take breaks", "Drink water"],
+    remedies: ["Peppermint tea", "Massage temples", "Cold compress"]
   },
-
   cough: {
-    causes: ["Common cold", "Allergy", "Bronchitis"],
-    precautions: [
-      "Avoid cold drinks",
-      "Use a humidifier",
-      "Rest your throat"
-    ],
-    remedies: [
-      "Honey with warm water",
-      "Ginger tea",
-      "Steam inhalation"
-    ]
+    causes: ["Cold", "Allergy", "Throat infection"],
+    precautions: ["Avoid cold drinks", "Use humidifier", "Rest throat"],
+    remedies: ["Honey warm water", "Ginger tea", "Steam inhalation"]
   },
-
   cold: {
-    causes: ["Viral infection", "Change in weather"],
-    precautions: [
-      "Avoid chilled food and drinks",
-      "Wash hands regularly",
-      "Keep yourself warm"
-    ],
-    remedies: [
-      "Drink tulsi or ginger tea",
-      "Steam inhalation",
-      "Stay hydrated"
-    ]
+    causes: ["Virus", "Weather change"],
+    precautions: ["Stay warm", "Avoid chilled items"],
+    remedies: ["Ginger tea", "Steam inhalation", "Warm soup"]
   },
-
   stomachpain: {
-    causes: ["Indigestion", "Gas trouble", "Food poisoning"],
-    precautions: [
-      "Avoid spicy and oily foods",
-      "Eat light meals",
-      "Stay hydrated"
-    ],
-    remedies: [
-      "Drink buttermilk or mint tea",
-      "Use a hot water bag",
-      "Take rest"
-    ]
+    causes: ["Gas", "Indigestion", "Food poisoning"],
+    precautions: ["Avoid oily food", "Eat light", "Hydrate"],
+    remedies: ["Mint tea", "Hot water bag", "Buttermilk"]
   },
-
   sorethroat: {
-    causes: ["Viral infection", "Cold", "Allergy"],
-    precautions: [
-      "Avoid cold food/drinks",
-      "Gargle with warm salt water",
-      "Rest your voice"
-    ],
-    remedies: [
-      "Honey and lemon in warm water",
-      "Ginger tea",
-      "Warm soup"
-    ]
+    causes: ["Infection", "Cold", "Allergy"],
+    precautions: ["Avoid cold drinks", "Rest voice"],
+    remedies: ["Salt-water gargle", "Honey lemon water", "Warm soup"]
   },
-
-  // --- 10 New Symptoms Below ---
-  dizziness: {
-    causes: ["Low blood pressure", "Dehydration", "Low sugar levels", "Vertigo"],
-    precautions: [
-      "Sit or lie down immediately",
-      "Avoid sudden standing",
-      "Drink water often"
-    ],
-    remedies: [
-      "ORS or electrolyte drink",
-      "Ginger tea",
-      "Eat a banana or biscuit"
-    ]
-  },
-
   vomiting: {
-    causes: ["Food poisoning", "Gastric irritation", "Motion sickness"],
-    precautions: [
-      "Avoid heavy meals",
-      "Do not lie flat immediately",
-      "Stay hydrated"
-    ],
-    remedies: [
-      "Sip ORS slowly",
-      "Ginger with honey",
-      "Cumin (jeera) water"
-    ]
+    causes: ["Food poisoning", "Indigestion", "Motion sickness"],
+    precautions: ["Avoid heavy meals", "Sip water slowly"],
+    remedies: ["ORS solution", "Ginger tea", "Banana"]
   },
-
   diarrhoea: {
-    causes: ["Infection", "Contaminated food", "Stomach flu"],
-    precautions: [
-      "Avoid outside food",
-      "Do not drink milk temporarily",
-      "Drink plenty of fluids"
-    ],
-    remedies: [
-      "ORS, coconut water",
-      "Curd with rice",
-      "Eat bland foods like khichdi"
-    ]
+    causes: ["Contaminated food", "Virus", "Food allergy"],
+    precautions: ["Avoid milk & spicy food", "Stay hydrated"],
+    remedies: ["ORS", "Curd rice", "Coconut water"]
   },
-
   backpain: {
-    causes: ["Muscle strain", "Long sitting", "Incorrect posture"],
-    precautions: [
-      "Avoid lifting heavy items",
-      "Sit straight with support",
-      "Take frequent breaks"
-    ],
-    remedies: [
-      "Hot/warm compress",
-      "Gentle stretching",
-      "Massage with pain relief oil"
-    ]
+    causes: ["Muscle strain", "Poor posture", "Stress"],
+    precautions: ["Avoid heavy lifting", "Sit properly"],
+    remedies: ["Hot pack", "Light stretching", "Gentle massage"]
   },
-
   chestpain: {
-    causes: ["Acidity", "Muscle strain", "Stress"],
-    precautions: [
-      "Avoid heavy/oily food",
-      "Do breathing exercises",
-      "Reduce stress"
-    ],
-    remedies: [
-      "Warm water",
-      "Antacid if acidity",
-      "Ginger tea"
-    ]
+    causes: ["Acidity", "Muscle strain", "Stress/anxiety"],
+    precautions: ["Avoid spicy food", "Do not overexert"],
+    remedies: ["Drink cold milk", "Relaxation breathing"]
   },
-
+  dizziness: {
+    causes: ["Low BP", "Dehydration", "Weakness"],
+    precautions: ["Stand up slowly", "Avoid skipping meals"],
+    remedies: ["ORS", "Eat something sweet", "Drink water"]
+  },
   rashes: {
-    causes: ["Allergy", "Heat rash", "Skin infection"],
-    precautions: [
-      "Avoid scratching",
-      "Keep skin cool",
-      "Use mild soaps"
-    ],
-    remedies: [
-      "Apply aloe vera",
-      "Cold compress",
-      "Calamine lotion"
-    ]
+    causes: ["Allergy", "Skin irritation", "Heat rash"],
+    precautions: ["Avoid scratching", "Use clean clothes"],
+    remedies: ["Aloe vera gel", "Cold compress", "Calamine lotion"]
   },
-
+  earpain: {
+    causes: ["Infection", "Cold", "Earwax buildup"],
+    precautions: ["Avoid inserting objects", "Keep ear dry"],
+    remedies: ["Warm compress", "Steam inhalation"]
+  },
   eyeirritation: {
-    causes: ["Dust allergy", "Screen strain", "Infection"],
-    precautions: [
-      "Avoid rubbing eyes",
-      "Reduce screen time",
-      "Wash eyes with clean water"
-    ],
-    remedies: [
-      "Rose water drops",
-      "Cold compress",
-      "Cucumber slices"
-    ]
+    causes: ["Dust allergy", "Screen strain"],
+    precautions: ["Avoid rubbing eyes", "Take screen breaks"],
+    remedies: ["Cold water splash", "Rose water drops"]
   },
-
-  earache: {
-    causes: ["Infection", "Wax build-up", "Cold or sinus issues"],
-    precautions: [
-      "Avoid inserting objects",
-      "Keep ear dry",
-      "Avoid loud noises"
-    ],
-    remedies: [
-      "Warm compress",
-      "Olive oil drops (mild cases)",
-      "Steam inhalation"
-    ]
-  },
-
-  fatigue: {
-    causes: ["Lack of sleep", "Anaemia", "Stress", "Dehydration"],
-    precautions: [
-      "Maintain proper sleep schedule",
-      "Eat iron-rich foods",
-      "Limit screen time"
-    ],
-    remedies: [
-      "Drink water",
-      "Take a short nap",
-      "Light stretching"
-    ]
-  },
-
-  shortnessofbreath: {
-    causes: ["Asthma (possible)", "Anxiety", "Allergy", "Overexertion"],
-    precautions: [
-      "Avoid dusty areas",
-      "Sit upright",
-      "Do not overexert"
-    ],
-    remedies: [
-      "Slow breathing exercise",
-      "Steam inhalation",
-      "Warm water"
-    ]
+  legcramps: {
+    causes: ["Dehydration", "Low magnesium", "Over-exercise"],
+    precautions: ["Stay hydrated", "Stretch regularly"],
+    remedies: ["Warm compress", "Banana", "Gentle massage"]
   }
 };
 
-// When user clicks Analyze Button
+// Main button logic
 btn.addEventListener("click", () => {
   const userInput = input.value.trim().toLowerCase();
   output.innerHTML = "";
@@ -249,12 +100,12 @@ btn.addEventListener("click", () => {
     let found = false;
     let html = "";
 
-    // Check each symptom
     for (let symptom in symptomDatabase) {
       if (userInput.includes(symptom)) {
         const info = symptomDatabase[symptom];
+
         html += `
-          <h3>🩺 Symptom detected: ${symptom.charAt(0).toUpperCase() + symptom.slice(1)}</h3>
+          <h3>🩺 Symptom: ${symptom}</h3>
 
           <h4>Possible Causes:</h4>
           <ul>${info.causes.map(c => `<li>${c}</li>`).join("")}</ul>
@@ -264,6 +115,7 @@ btn.addEventListener("click", () => {
 
           <h4>Home Remedies:</h4>
           <ul>${info.remedies.map(r => `<li>${r}</li>`).join("")}</ul>
+
           <hr>
         `;
         found = true;
@@ -272,11 +124,11 @@ btn.addEventListener("click", () => {
 
     if (!found) {
       html = `
-        <p>⚠️ Sorry, I don't have data for your symptoms yet.</p>
-        <p>Try something like: <b>fever</b>, <b>headache</b>, <b>cold</b>, <b>stomach pain</b>, <b>cough</b>, etc.</p>
+        <p>⚠️ No data found for your symptoms.</p>
+        <p>Try symptoms like: fever, headache, stomachpain, cough, dizziness, vomiting etc.</p>
       `;
     }
 
     output.innerHTML = html;
-  }, 1200);
+  }, 1000);
 });
